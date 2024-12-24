@@ -1,26 +1,36 @@
-from app.audio_processor import AudioProcessor
 import numpy as np
+import wave
 import time
+from app.audio_processor import AudioProcessor
 
-def test_audio():
+def test_audio(filename="output.wav", duration=5):
     processor = AudioProcessor()
     processor.start_stream()
     
-    print("Recording for 5 seconds...")
+    print(f"Recording for {duration} seconds...")
+    
+    frames = []
     
     try:
-        for _ in range(50):  # ~5 seconds of readings
+        for _ in range(int(processor.RATE / processor.CHUNK * duration)):
             data = processor.read_chunk()
-            level = np.abs(data).mean()
-            print(f"Signal level: {level:.6f}")
-            time.sleep(0.1)
-            
+            frames.append(data)
     except KeyboardInterrupt:
         print("\nStopping...")
     finally:
-        processor.stream.stop_stream()
+        if processor.stream.is_active():
+            processor.stream.stop_stream()
         processor.stream.close()
         processor.p.terminate()
+    
+    # Save the recorded frames as a WAV file
+    with wave.open(filename, 'wb') as wf:
+        wf.setnchannels(processor.CHANNELS)
+        wf.setsampwidth(processor.p.get_sample_size(processor.FORMAT))
+        wf.setframerate(processor.RATE)
+        wf.writeframes(b''.join(frames))
+    
+    print(f"Audio saved to {filename}")
 
 if __name__ == "__main__":
-    test_audio() 
+    test_audio()
