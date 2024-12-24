@@ -7,6 +7,9 @@ from audio_processor import AudioProcessor
 import numpy as np
 import matplotlib.pyplot as plt
 
+import os
+print("Current working directory:", os.getcwd())
+
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
