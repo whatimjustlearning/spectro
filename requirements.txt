@@ -1,0 +1,12 @@
+# Audio processing
+pyaudio
+numpy
+scipy
+librosa
+
+# Web server
+flask
+gunicorn
+
+# Visualization
+matplotlib 
