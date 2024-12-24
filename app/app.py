@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import os
 print("Current working directory:", os.getcwd())
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='/home/spectro/templates')
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -49,7 +49,7 @@ def generate_spectrogram(wav_file):
 
 @app.route('/')
 def index():
-    return render_template('/home/spectro/templates/index.html')
+    return render_template('index.html')
 
 @app.route('/spectrogram')
 def get_spectrogram():
