@@ -3,6 +3,7 @@ pyaudio
 numpy
 scipy
 librosa
+wave
 
 # Web server
 flask
