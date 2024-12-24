@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import argparse
+import os
 
-def plot_waveform(wav_file):
+def plot_waveform(wav_file, output_file=None):
     # Read the WAV file
     sample_rate, data = wavfile.read(wav_file)
     
@@ -17,19 +18,25 @@ def plot_waveform(wav_file):
     # Plot the waveform
     plt.figure(figsize=(10, 4))
     plt.plot(time, data, label="Waveform")
-    plt.title("Waveform of " + wav_file)
+    plt.title("Waveform of " + os.path.basename(wav_file))
     plt.xlabel("Time [s]")
     plt.ylabel("Amplitude")
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+    
+    if output_file:
+        plt.savefig(output_file)
+        print(f"Waveform saved as {output_file}")
+    else:
+        plt.show()
 
 def main():
     parser = argparse.ArgumentParser(description="Plot the waveform of a WAV file.")
     parser.add_argument("wav_file", type=str, help="Path to the WAV file")
+    parser.add_argument("-o", "--output", type=str, help="Output file for the waveform image (e.g., output.png)")
     args = parser.parse_args()
     
-    plot_waveform(args.wav_file)
+    plot_waveform(args.wav_file, args.output)
 
 if __name__ == "__main__":
     main()
