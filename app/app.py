@@ -3,7 +3,7 @@ import os
 import wave
 import threading
 import time
-from app.audio_processor import AudioProcessor
+from audio_processor import AudioProcessor
 import numpy as np
 import matplotlib.pyplot as plt
 
