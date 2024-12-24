@@ -49,7 +49,7 @@ def generate_spectrogram(wav_file):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('/home/spectro/templates/index.html')
 
 @app.route('/spectrogram')
 def get_spectrogram():
