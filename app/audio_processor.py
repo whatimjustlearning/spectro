@@ -3,7 +3,7 @@ import numpy as np
 
 class AudioProcessor:
     def __init__(self):
-        self.CHUNK = 1024 * 2
+        self.CHUNK = 2048 * 2
         self.FORMAT = pyaudio.paFloat32
         self.CHANNELS = 1
         self.RATE = 44100
