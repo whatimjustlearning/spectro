@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
+import argparse
 
 def plot_waveform(wav_file):
     # Read the WAV file
@@ -23,5 +24,12 @@ def plot_waveform(wav_file):
     plt.tight_layout()
     plt.show()
 
-# Example usage
-plot_waveform("path/to/your/file.wav")
+def main():
+    parser = argparse.ArgumentParser(description="Plot the waveform of a WAV file.")
+    parser.add_argument("wav_file", type=str, help="Path to the WAV file")
+    args = parser.parse_args()
+    
+    plot_waveform(args.wav_file)
+
+if __name__ == "__main__":
+    main()
