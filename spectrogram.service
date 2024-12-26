@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=pi
+User=user
 Group=audio
 WorkingDirectory=/home/spectro
 Environment=PYTHONPATH=/home/spectro
