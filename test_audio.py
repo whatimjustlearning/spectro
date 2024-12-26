@@ -2,12 +2,29 @@ import numpy as np
 import wave
 import time
 from app.audio_processor import AudioProcessor
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Log to console
+        logging.FileHandler('test_audio.log')  # Log to file
+    ]
+)
+logger = logging.getLogger(__name__)
 
 def test_audio(filename="app/tmp/output.wav", duration=5):
-    processor = AudioProcessor()
+    processor = AudioProcessor(logger)
+    # Print device info before starting
+    print("\nAvailable audio devices:")
+    for i in range(processor.p.get_device_count()):
+        dev = processor.p.get_device_info_by_index(i)
+        print(f"Device {i}: {dev['name']}")
+    
     processor.start_stream()
     
-    print(f"Recording for {duration} seconds...")
+    logger.info(f"Recording for {duration} seconds...")
     
     frames = []
     
