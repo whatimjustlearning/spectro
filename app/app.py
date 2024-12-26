@@ -7,10 +7,6 @@ from audio_processor import AudioProcessor
 import scipy.io.wavfile
 import numpy as np
 import matplotlib.pyplot as plt
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 import os
 print("Current working directory:", os.getcwd())
@@ -25,12 +21,12 @@ def record_and_process():
     processor = AudioProcessor()
     processor.start_stream()
     
-    logging.info("Audio stream started")
+    print("Audio stream started")
     
     while True:
         frames = []
         for _ in range(int(processor.RATE / processor.CHUNK * 2)):  # 2 seconds
-            logging.info("Reading chunk")
+            print("Reading chunk")
             data = processor.read_chunk()
             frames.append(data)
         
@@ -42,12 +38,12 @@ def record_and_process():
             wf.setframerate(processor.RATE)
             wf.writeframes(b''.join(frames))
             
-        logging.info("Saved WAV file")
+        print("Saved WAV file")
         
         # Generate spectrogram
         generate_spectrogram(filename)
         
-        logging.info("Generated spectrogram")
+        print("Generated spectrogram")
         
         time.sleep(0.1)  # Short delay to prevent CPU overload
 
