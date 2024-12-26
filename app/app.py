@@ -6,34 +6,47 @@ import time
 from audio_processor import AudioProcessor
 import numpy as np
 import matplotlib.pyplot as plt
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 import os
 print("Current working directory:", os.getcwd())
 
 app = Flask(__name__, template_folder='/home/spectro/templates')
 UPLOAD_FOLDER = 'uploads'
+TMP_FOLDER = 'tmp'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(TMP_FOLDER, exist_ok=True)
 
 def record_and_process():
     processor = AudioProcessor()
     processor.start_stream()
     
+    logging.info("Audio stream started")
+    
     while True:
         frames = []
         for _ in range(int(processor.RATE / processor.CHUNK * 2)):  # 2 seconds
+            logging.info("Reading chunk")
             data = processor.read_chunk()
             frames.append(data)
         
         # Save the recorded frames as a WAV file
-        filename = os.path.join(UPLOAD_FOLDER, 'current.wav')
+        filename = os.path.join(TMP_FOLDER, 'current.wav')
         with wave.open(filename, 'wb') as wf:
             wf.setnchannels(processor.CHANNELS)
             wf.setsampwidth(processor.p.get_sample_size(processor.FORMAT))
             wf.setframerate(processor.RATE)
             wf.writeframes(b''.join(frames))
+            
+        logging.info("Saved WAV file")
         
         # Generate spectrogram
         generate_spectrogram(filename)
+        
+        logging.info("Generated spectrogram")
         
         time.sleep(0.1)  # Short delay to prevent CPU overload
 
