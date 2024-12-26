@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 import os
 print("Current working directory:", os.getcwd())
 
-app = Flask(__name__, template_folder='/home/spectro/templates')
+app = Flask(__name__, template_folder='/home/spectro/app/templates')
 UPLOAD_FOLDER = 'uploads'
 TMP_FOLDER = 'tmp'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
