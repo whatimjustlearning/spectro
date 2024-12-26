@@ -32,12 +32,26 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(TMP_FOLDER, exist_ok=True)
 
 def record_and_process():
+    logger.info("Record and process function started")
     try:
         logger.info("Initializing AudioProcessor...")
-        processor = AudioProcessor()
+        processor = AudioProcessor(logger)
+        logger.info("AudioProcessor initialized")
+        
+        logger.info("Starting audio stream...")
         processor.start_stream()
         logger.info("Audio stream started successfully")
         
+        # Test immediate recording
+        logger.info("Testing first recording...")
+        data = processor.read_chunk()
+        logger.info(f"Successfully read first chunk of size: {len(data)}")
+        
+    except Exception as e:
+        logger.error(f"Error in record_and_process: {e}", exc_info=True)
+        raise
+        
+    try:
         while True:
             frames = []
             logger.info("Recording 2 seconds of audio...")
@@ -115,8 +129,16 @@ def get_spectrogram():
     return send_file(spectrogram_path, mimetype='image/png')
 
 if __name__ == "__main__":
-    logger.info("Starting recording thread...")
-    recording_thread = threading.Thread(target=record_and_process, daemon=True)
-    recording_thread.start()
-    logger.info("Recording thread started")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    logger.info("Application starting...")
+    try:
+        logger.info("Starting recording thread...")
+        recording_thread = threading.Thread(target=record_and_process, daemon=True)
+        recording_thread.start()
+        logger.info("Recording thread started successfully")
+        
+        # Add thread status check
+        logger.info(f"Thread is alive: {recording_thread.is_alive()}")
+        
+        app.run(debug=True, host='0.0.0.0', port=5000)
+    except Exception as e:
+        logger.error(f"Failed to start: {e}", exc_info=True)
