@@ -35,7 +35,7 @@ def record_and_process():
     logger.info("Record and process function started")
     try:
         logger.info("Initializing AudioProcessor...")
-        processor = AudioProcessor(logger)
+        processor = AudioProcessor()
         logger.info("AudioProcessor initialized")
         
         logger.info("Starting audio stream...")
