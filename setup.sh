@@ -2,7 +2,7 @@
 
 # Create log directory
 sudo mkdir -p /var/log/spectrogram
-sudo chown pi:pi /var/log/spectrogram
+sudo chown user:user /var/log/spectrogram
 
 # Copy systemd service file
 sudo cp spectrogram.service /etc/systemd/system/
