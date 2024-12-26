@@ -7,7 +7,8 @@ Type=simple
 User=user
 Group=audio
 WorkingDirectory=/home/spectro/app
-Environment=PYTHONPATH=/home/spectro
+Environment=PATH=/home/spectro/venv/bin:$PATH
+Environment=PYTHONPATH=/home/spectro/app
 ExecStart=/home/spectro/venv/bin/gunicorn --bind 0.0.0.0:5000 app:app --access-logfile /var/log/spectrogram/access.log --error-logfile /var/log/spectrogram/error.log
 Restart=always
 RestartSec=5
