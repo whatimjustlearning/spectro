@@ -5,6 +5,12 @@ from app.audio_processor import AudioProcessor
 
 def test_audio(filename="app/tmp/output.wav", duration=5):
     processor = AudioProcessor()
+    print("\nAvailable audio devices:")
+    for i in range(processor.p.get_device_count()):
+        dev = processor.p.get_device_info_by_index(i)
+        print(f"Device {i}: {dev['name']}")
+    
+    print(f"Using device index: {processor.device_index}")
     processor.start_stream()
     
     print(f"Recording for {duration} seconds...")
