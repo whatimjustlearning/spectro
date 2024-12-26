@@ -33,23 +33,13 @@ class AudioProcessor:
                 rate=self.RATE,
                 input=True,
                 input_device_index=self.device_index,
-                frames_per_buffer=self.CHUNK,
-                stream_callback=self._callback
+                frames_per_buffer=self.CHUNK
             )
             self.logger.info("Audio stream opened successfully")
         except Exception as e:
             self.logger.error(f"Failed to open audio stream: {e}", exc_info=True)
             raise
-    
-    def _callback(self, in_data, frame_count, time_info, status):
-        if status:
-            self.logger.warning(f"Stream callback status: {status}")
-        return (None, pyaudio.paContinue)
         
     def read_chunk(self):
-        try:
-            data = self.stream.read(self.CHUNK, exception_on_overflow=False)
-            return np.frombuffer(data, dtype=np.float32)
-        except Exception as e:
-            self.logger.error(f"Error reading chunk: {e}")
-            raise
+        data = self.stream.read(self.CHUNK)
+        return np.frombuffer(data, dtype=np.float32) 
