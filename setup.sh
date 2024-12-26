@@ -1,11 +1,20 @@
 #!/bin/bash
 
-# Install required packages
-sudo apt-get update
-sudo apt-get install -y git python3-pip
+# Create log directory
+sudo mkdir -p /var/log/spectrogram
+sudo chown pi:pi /var/log/spectrogram
 
-# Set up IQAudio DAC
-echo "dtoverlay=iqaudio-dacplus" | sudo tee -a /boot/config.txt
+# Copy systemd service file
+sudo cp spectrogram.service /etc/systemd/system/
 
-# Create cron job for git pulls
-(crontab -l 2>/dev/null; echo "*/5 * * * * cd /home/pi/audio-analyzer && git pull") | crontab - 
+# Reload systemd and enable service
+sudo systemctl daemon-reload
+sudo systemctl enable spectrogram
+sudo systemctl start spectrogram
+
+# Add user to required groups
+sudo usermod -a -G audio user
+
+echo "Setup complete! The service will start automatically on boot."
+
+(crontab -l 2>/dev/null; echo "*/5 * * * * cd /home/spectro && git pull") | crontab - 
