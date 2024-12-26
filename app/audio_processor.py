@@ -30,5 +30,10 @@ class AudioProcessor:
         )
         
     def read_chunk(self):
-        data = self.stream.read(self.CHUNK, exception_on_overflow=False)
-        return np.frombuffer(data, dtype=np.float32) 
+        try:
+            data = self.stream.read(self.CHUNK, exception_on_overflow=False)
+            return np.frombuffer(data, dtype=np.float32)
+        except Exception as e:
+            self.logger.warning(f"Warning reading chunk: {e}")
+            # Return silence instead of raising an error
+            return np.zeros(self.CHUNK, dtype=np.float32)
