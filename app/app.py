@@ -4,6 +4,7 @@ import wave
 import threading
 import time
 from audio_processor import AudioProcessor
+import scipy.io.wavfile
 import numpy as np
 import matplotlib.pyplot as plt
 import logging
@@ -51,7 +52,7 @@ def record_and_process():
         time.sleep(0.1)  # Short delay to prevent CPU overload
 
 def generate_spectrogram(wav_file):
-    sample_rate, data = wave.open(wav_file)
+    sample_rate, data = scipy.io.wavfile.read(wav_file)
     if len(data.shape) == 2:
         data = data.mean(axis=1)
     
@@ -65,8 +66,24 @@ def index():
     return render_template('index.html')
 
 @app.route('/spectrogram')
-def get_spectrogram():
+def spectrogram_page():
     return render_template('spectrogram.html')
+
+@app.route('/spectrogram-image')
+def get_spectrogram():
+    spectrogram_path = os.path.join(UPLOAD_FOLDER, 'spectrogram.png')
+    
+    if not os.path.exists(spectrogram_path):
+        # Generate an empty spectrogram
+        plt.figure(figsize=(10, 4))
+        plt.text(0.5, 0.5, 'Waiting for audio...', 
+                horizontalalignment='center',
+                verticalalignment='center')
+        plt.axis('off')
+        plt.savefig(spectrogram_path, bbox_inches='tight', pad_inches=0)
+        plt.close()
+    
+    return send_file(spectrogram_path, mimetype='image/png')
 
 if __name__ == "__main__":
     threading.Thread(target=record_and_process, daemon=True).start()
