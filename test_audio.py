@@ -3,7 +3,7 @@ import wave
 import time
 from app.audio_processor import AudioProcessor
 
-def test_audio(filename="output.wav", duration=5):
+def test_audio(filename="app/tmp/output.wav", duration=5):
     processor = AudioProcessor()
     processor.start_stream()
     
