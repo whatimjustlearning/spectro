@@ -26,14 +26,8 @@ class AudioProcessor:
             rate=self.RATE,
             input=True,
             input_device_index=self.device_index,
-            frames_per_buffer=self.CHUNK,
-            stream_callback=self._callback
+            frames_per_buffer=self.CHUNK
         )
-        
-    def _callback(self, in_data, frame_count, time_info, status):
-        if status:
-            print(f"Stream callback status: {status}")
-        return (None, pyaudio.paContinue)
         
     def read_chunk(self):
         data = self.stream.read(self.CHUNK, exception_on_overflow=False)
