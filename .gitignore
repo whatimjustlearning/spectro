@@ -189,3 +189,7 @@ ehthumbs_vista.db
 .directory
 .Trash-*
 .nfs*
+
+*.wav
+*.png
+*.log

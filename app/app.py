@@ -66,7 +66,7 @@ def index():
 
 @app.route('/spectrogram')
 def get_spectrogram():
-    return send_file(os.path.join(UPLOAD_FOLDER, 'spectrogram.png'), mimetype='image/png')
+    return render_template('spectrogram.html')
 
 if __name__ == "__main__":
     threading.Thread(target=record_and_process, daemon=True).start()
