@@ -5,7 +5,7 @@ class AudioProcessor:
     def __init__(self, logger):
         self.logger = logger
         self.logger.info("Initializing AudioProcessor class")
-        self.CHUNK = 4096
+        self.CHUNK = 4096 * 2
         self.FORMAT = pyaudio.paFloat32
         self.CHANNELS = 1
         self.RATE = 44100
