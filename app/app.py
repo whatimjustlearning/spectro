@@ -31,6 +31,16 @@ TMP_FOLDER = 'tmp'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(TMP_FOLDER, exist_ok=True)
 
+# Initialize the recording thread when the app is created
+logger.info("Starting recording thread...")
+try:
+    recording_thread = threading.Thread(target=record_and_process, daemon=True)
+    recording_thread.start()
+    logger.info("Recording thread started successfully")
+    logger.info(f"Thread is alive: {recording_thread.is_alive()}")
+except Exception as e:
+    logger.error(f"Failed to start recording thread: {e}", exc_info=True)
+
 def record_and_process():
     logger.info("Record and process function started")
     try:
@@ -129,16 +139,4 @@ def get_spectrogram():
     return send_file(spectrogram_path, mimetype='image/png')
 
 if __name__ == "__main__":
-    logger.info("Application starting...")
-    try:
-        logger.info("Starting recording thread...")
-        recording_thread = threading.Thread(target=record_and_process, daemon=True)
-        recording_thread.start()
-        logger.info("Recording thread started successfully")
-        
-        # Add thread status check
-        logger.info(f"Thread is alive: {recording_thread.is_alive()}")
-        
-        app.run(debug=True, host='0.0.0.0', port=5000)
-    except Exception as e:
-        logger.error(f"Failed to start: {e}", exc_info=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
