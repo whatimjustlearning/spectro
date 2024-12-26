@@ -1,0 +1,16 @@
+[Unit]
+Description=Live Audio Spectrogram Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=audio
+WorkingDirectory=/home/spectro
+Environment=PYTHONPATH=/home/spectro
+ExecStart=/usr/local/bin/gunicorn --bind 0.0.0.0:5000 app:app --access-logfile /var/log/spectrogram/access.log --error-logfile /var/log/spectrogram/error.log
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
