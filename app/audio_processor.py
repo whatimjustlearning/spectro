@@ -1,8 +1,10 @@
 import pyaudio
 import numpy as np
+import time
 
 class AudioProcessor:
     def __init__(self):
+        time.sleep(30)
         self.CHUNK = 4096 * 2
         self.FORMAT = pyaudio.paFloat32
         self.CHANNELS = 1
