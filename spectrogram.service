@@ -1,11 +1,12 @@
 [Unit]
 Description=Live Audio Spectrogram Service
-After=network.target
+After=sound.target alsa-restore.service
+Wants=sound.target
 
 [Service]
 Type=simple
 User=user
-Group=audio
+Group=audio,plugdev
 WorkingDirectory=/home/spectro/app
 Environment=PATH=/home/spectro/venv/bin:/usr/local/bin:/usr/bin:/bin
 Environment=PYTHONPATH=/home/spectro/app
