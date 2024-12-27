@@ -6,7 +6,8 @@ Wants=sound.target
 [Service]
 Type=simple
 User=user
-Group=audio,plugdev
+Group=audio
+SupplementaryGroups=audio plugdev
 WorkingDirectory=/home/spectro/app
 Environment=PATH=/home/spectro/venv/bin:/usr/local/bin:/usr/bin:/bin
 Environment=PYTHONPATH=/home/spectro/app
